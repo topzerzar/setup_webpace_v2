@@ -1,38 +1,28 @@
-const express = require('express');
-const path = require('path');
+const express =  require('express');
 
-const app = express();
+const app = express()
 
-// app.use(express.static('dist'));
-// app.use('/', express.static('src'));
-
-
-// app.use(express.static(__dirname + '/dist/*'));
-// app.use();
-
-// app.use(express.static(__dirname + '/src'));
-
-app.get('/', function(req, res) {
-    const HTML = `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset='utf-8'>
-        <title>Wiki!</title>
-      </head>
-      <body>
-        <div id='app'></div>
-        <!-- ตอนนี้เราจะใช้พอร์ต 8081 กับ webpack dev server
-        <script src='http://localhost:3000/dist/bundle.js'></script>  -->
-        <h1>Hellow</h1>
-      </body>
-    </html>
-    `
-    res.end(HTML)
-});
-
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+app.use('/dist', express.static('./dist'))
+app.use((req, res) => {
+  res.status(200).send(getMarkup())
 })
 
-module.exports = app;
+app.listen(8080, () => {
+  console.log('Server start listening at http://localhost:8080')
+})
+
+
+const getMarkup = () => (
+`
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Hello React</title>
+	</head>
+	<body>
+		<script src="./dist/bundle.js"></script>
+	</body>
+</html>
+  `
+);
